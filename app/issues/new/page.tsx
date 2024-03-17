@@ -10,13 +10,17 @@ import {
 import axios from 'axios';
 import { MdError } from 'react-icons/md';
 import { useRouter } from 'next/navigation';
-import SimpleMDE from 'react-simplemde-editor';
 import { zodResolver } from '@hookform/resolvers/zod';
 import 'easymde/dist/easymde.min.css';
 import { schema } from '@/app/validationSchema';
 import { z } from 'zod';
-import ErrorMessage from '@/app/components/ErrorMessage';
-import Spinner from '@/app/components/Spinner';
+import dynamic from 'next/dynamic';
+import { ErrorMessage, Spinner } from '@/app/components';
+
+const SimpleMDE = dynamic(
+  () => import('react-simplemde-editor'),
+  { ssr: false },
+);
 
 type IssueForm = z.infer<typeof schema>
 
@@ -27,6 +31,7 @@ const NewIssuePage = () => {
     control,
     formState: { errors },
   } = useForm<IssueForm>({ resolver: zodResolver(schema) });
+
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -51,11 +56,13 @@ const NewIssuePage = () => {
         <Callout.Icon>
           <MdError />
         </Callout.Icon>
+
         <Callout.Text>
           {errorMessage}
         </Callout.Text>
       </Callout.Root>
       )}
+
       <form
         className="space-y-3"
         onSubmit={handleSubmit(onSubmit)}
@@ -66,13 +73,27 @@ const NewIssuePage = () => {
             {...register('title')}
           />
         </TextField.Root>
-        <ErrorMessage>{errors.title?.message}</ErrorMessage>
+
+        <ErrorMessage>
+          {errors.title?.message}
+        </ErrorMessage>
+
         <Controller
           control={control}
           name="description"
-          render={({ field }) => <SimpleMDE placeholder="Description" {...field} />}
+          render={({ field }) => (
+            <SimpleMDE
+              placeholder="Description"
+              {...field}
+              ref={null}
+            />
+          )}
         />
-        <ErrorMessage>{errors.description?.message}</ErrorMessage>
+
+        <ErrorMessage>
+          {errors.description?.message}
+        </ErrorMessage>
+
         <Button disabled={isSubmitting} className="cursor-pointer">
           Submit new issue
           {isSubmitting && <Spinner />}
