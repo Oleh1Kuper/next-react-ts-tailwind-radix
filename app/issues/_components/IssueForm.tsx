@@ -14,14 +14,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import 'easymde/dist/easymde.min.css';
 import { schema } from '@/app/validationSchema';
 import { z } from 'zod';
-import dynamic from 'next/dynamic';
 import { ErrorMessage, Spinner } from '@/app/components';
 import { Issue } from '@prisma/client';
-
-const SimpleMDE = dynamic(
-  () => import('react-simplemde-editor'),
-  { ssr: false },
-);
+import SimpleMdeReact from 'react-simplemde-editor';
 
 type IssueFormData = z.infer<typeof schema>
 type Props = {
@@ -93,7 +88,7 @@ const IssueForm: React.FC<Props> = ({ issue }) => {
           name="description"
           defaultValue={issue?.description}
           render={({ field }) => (
-            <SimpleMDE
+            <SimpleMdeReact
               placeholder="Description"
               {...field}
               ref={null}
