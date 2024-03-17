@@ -7,6 +7,8 @@
     "project": "./tsconfig.json"
   },
   "rules": {
+    "react/prop-types": "off",
+    "react/require-default-props": "off",
     "import/prefer-default-export": "off",
     "react/jsx-filename-extension": [2, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }],
     "react/function-component-definition": [
