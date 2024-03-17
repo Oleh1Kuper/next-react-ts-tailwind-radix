@@ -4,7 +4,9 @@
 
 import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { Button, Callout, Text, TextField } from '@radix-ui/themes';
+import {
+  Button, Callout, TextField,
+} from '@radix-ui/themes';
 import axios from 'axios';
 import { MdError } from 'react-icons/md';
 import { useRouter } from 'next/navigation';
@@ -13,6 +15,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import 'easymde/dist/easymde.min.css';
 import { schema } from '@/app/validationSchema';
 import { z } from 'zod';
+import ErrorMessage from '@/app/components/ErrorMessage';
+import Spinner from '@/app/components/Spinner';
 
 type IssueForm = z.infer<typeof schema>
 
@@ -25,13 +29,18 @@ const NewIssuePage = () => {
   } = useForm<IssueForm>({ resolver: zodResolver(schema) });
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const onSubmit = async (data: IssueForm) => {
+    setIsSubmitting(true);
+
     try {
       await axios.post('/api/issues', data);
       router.push('/issues');
     } catch (error) {
       setErrorMessage('Something went Wrong');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -57,15 +66,16 @@ const NewIssuePage = () => {
             {...register('title')}
           />
         </TextField.Root>
-        {errors.title && <Text as="p" color="red">{errors.title.message}</Text>}
+        <ErrorMessage>{errors.title?.message}</ErrorMessage>
         <Controller
           control={control}
           name="description"
           render={({ field }) => <SimpleMDE placeholder="Description" {...field} />}
         />
-        {errors.description && <Text as="p" color="red">{errors.description.message}</Text>}
-        <Button className="cursor-pointer">
+        <ErrorMessage>{errors.description?.message}</ErrorMessage>
+        <Button disabled={isSubmitting} className="cursor-pointer">
           Submit new issue
+          {isSubmitting && <Spinner />}
         </Button>
       </form>
     </div>
