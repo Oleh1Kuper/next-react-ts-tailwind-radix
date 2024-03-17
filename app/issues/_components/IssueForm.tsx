@@ -36,16 +36,21 @@ const IssueForm: React.FC<Props> = ({ issue }) => {
     formState: { errors },
   } = useForm<IssueFormData>({ resolver: zodResolver(schema) });
 
-  const router = useRouter();
   const [errorMessage, setErrorMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
 
   const onSubmit = async (data: IssueFormData) => {
     setIsSubmitting(true);
 
     try {
-      await axios.post('/api/issues', data);
+      if (issue) {
+        await axios.patch(`/api/issues/${issue.id}`, data);
+      } else {
+        await axios.post('/api/issues', data);
+      }
       router.push('/issues');
+      router.refresh();
     } catch (error) {
       setErrorMessage('Something went Wrong');
     } finally {
@@ -101,7 +106,7 @@ const IssueForm: React.FC<Props> = ({ issue }) => {
         </ErrorMessage>
 
         <Button disabled={isSubmitting} className="cursor-pointer">
-          Submit new issue
+          {issue ? 'Update issue' : 'Submit new issue'}
           {isSubmitting && <Spinner />}
         </Button>
       </form>

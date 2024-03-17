@@ -5,6 +5,8 @@ import { IssueStatusBadge } from '@/app/components';
 import IssueToolBar from './IssueToolBar';
 import Link from '../components/Link';
 
+export const dynamic = 'force-dynamic';
+
 const IssuesPage = async () => {
   const issues = await prisma.issue.findMany();
 
