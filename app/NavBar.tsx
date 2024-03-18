@@ -11,80 +11,97 @@ import {
   Box, Container, DropdownMenu, Flex,
   Text,
 } from '@radix-ui/themes';
+import { Skeleton } from '@/app/components';
 
-const NavBar = () => {
+const NavLinks = () => {
   const currentPath = usePathname();
-  const { data: session, status } = useSession();
-
   const links = [
     { label: 'Dashboard', href: '/' },
     { label: 'Issues', href: '/issues/list' },
   ];
 
   return (
-    <nav className="border-b mb-5 px-5 py-3">
-      <Container>
-        <Flex justify="between">
-          <Flex align="center" gap="3">
-            <Link href="/">
-              <FaBug />
-            </Link>
-
-            <ul className="flex space-x-6">
-              {links.map(({ label, href }) => (
-                <li key={href}>
-                  <Link
-                    href={href}
-                    className={cn('text-zinc-500 hover:text-zinc-800 transition-colors', {
-                      'text-zinc-900': currentPath === href,
-                    })}
-                  >
-                    {label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </Flex>
-
-          <Box>
-            {status === 'authenticated' && (
-            <DropdownMenu.Root>
-              <DropdownMenu.Trigger>
-                <Avatar
-                  src={session.user!.image!}
-                  fallback="?"
-                  alt="User photo"
-                  size="2"
-                  radius="full"
-                  className="cursor-pointer"
-                />
-              </DropdownMenu.Trigger>
-
-              <DropdownMenu.Content>
-                <DropdownMenu.Label>
-                  <Text size="2">
-                    {session.user?.email}
-                  </Text>
-                </DropdownMenu.Label>
-
-                <DropdownMenu.Item>
-                  <Link href="/api/auth/signout">
-                    Log out
-                  </Link>
-                </DropdownMenu.Item>
-              </DropdownMenu.Content>
-            </DropdownMenu.Root>
-            )}
-            {status === 'unauthenticated' && (
-            <Link href="/api/auth/signin">
-              Login
-            </Link>
-            )}
-          </Box>
-        </Flex>
-      </Container>
-    </nav>
+    <ul className="flex space-x-6">
+      {links.map(({ label, href }) => (
+        <li key={href}>
+          <Link
+            href={href}
+            className={cn('nav-link', {
+              '!text-zinc-900': currentPath === href,
+            })}
+          >
+            {label}
+          </Link>
+        </li>
+      ))}
+    </ul>
   );
 };
+
+const AuthStatus = () => {
+  const { data: session, status } = useSession();
+
+  if (status === 'unauthenticated') {
+    return (
+      <Link href="/api/auth/signin" className="nav-link">
+        Login
+      </Link>
+    );
+  }
+
+  if (status === 'loading') {
+    return <Skeleton width="3rem" />;
+  }
+
+  return (
+    <DropdownMenu.Root>
+      <DropdownMenu.Trigger>
+        <Avatar
+          src={session!.user!.image!}
+          fallback="?"
+          alt="User photo"
+          size="2"
+          radius="full"
+          className="cursor-pointer"
+          referrerPolicy="no-referrer"
+        />
+      </DropdownMenu.Trigger>
+
+      <DropdownMenu.Content>
+        <DropdownMenu.Label>
+          <Text size="2">
+            {session!.user!.email!}
+          </Text>
+        </DropdownMenu.Label>
+
+        <Link href="/api/auth/signout">
+          <DropdownMenu.Item>
+            Log out
+          </DropdownMenu.Item>
+        </Link>
+      </DropdownMenu.Content>
+    </DropdownMenu.Root>
+  );
+};
+
+const NavBar = () => (
+  <nav className="border-b mb-5 px-5 py-3">
+    <Container>
+      <Flex justify="between">
+        <Flex align="center" gap="3">
+          <Link href="/">
+            <FaBug />
+          </Link>
+
+          <NavLinks />
+        </Flex>
+
+        <Box>
+          <AuthStatus />
+        </Box>
+      </Flex>
+    </Container>
+  </nav>
+);
 
 export default NavBar;
