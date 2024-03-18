@@ -7,6 +7,7 @@ import authOptions from '@/app/auth/authOptions';
 import EditIssueButton from './EditIssueButton';
 import IssueDetails from './IssueDetails';
 import RemoveIssueButton from './RemoveIssueButton';
+import AssigneeSelect from './AssigneeSelect';
 
 type Props = {
   params: { id: string };
@@ -35,6 +36,7 @@ const IssueDetailPage: React.FC<Props> = async ({ params: { id } }) => {
       {session && (
         <Box>
           <Flex direction="column" gap="4">
+            <AssigneeSelect />
             <EditIssueButton id={issue.id} />
             <RemoveIssueButton id={issue.id} />
           </Flex>
