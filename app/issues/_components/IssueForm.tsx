@@ -5,16 +5,15 @@
 import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import {
-  Button, Callout, TextField,
+  Button, TextField,
 } from '@radix-ui/themes';
 import axios from 'axios';
-import { MdError } from 'react-icons/md';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import 'easymde/dist/easymde.min.css';
 import { schema } from '@/app/validationSchema';
 import { z } from 'zod';
-import { ErrorMessage, Spinner } from '@/app/components';
+import { ErrorMessage, Spinner, AlertError } from '@/app/components';
 import { Issue } from '@prisma/client';
 import SimpleMdeReact from 'react-simplemde-editor';
 
@@ -44,7 +43,7 @@ const IssueForm: React.FC<Props> = ({ issue }) => {
       } else {
         await axios.post('/api/issues', data);
       }
-      router.push('/issues');
+      router.push('/issues/list');
       router.refresh();
     } catch (error) {
       setErrorMessage('Something went Wrong');
@@ -56,19 +55,13 @@ const IssueForm: React.FC<Props> = ({ issue }) => {
   return (
     <div className="max-w-xl">
       {errorMessage && (
-      <Callout.Root color="red" className="mb-5">
-        <Callout.Icon>
-          <MdError />
-        </Callout.Icon>
-
-        <Callout.Text>
+        <AlertError>
           {errorMessage}
-        </Callout.Text>
-      </Callout.Root>
+        </AlertError>
       )}
 
       <form
-        className="space-y-3"
+        className="space-y-3 mt-5"
         onSubmit={handleSubmit(onSubmit)}
       >
         <TextField.Root>

@@ -3,7 +3,7 @@ import prisma from '@/prisma/client';
 import { Table } from '@radix-ui/themes';
 import { IssueStatusBadge } from '@/app/components';
 import IssueToolBar from './IssueToolBar';
-import Link from '../components/Link';
+import Link from '../../components/Link';
 
 export const dynamic = 'force-dynamic';
 

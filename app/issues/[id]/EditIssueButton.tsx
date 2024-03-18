@@ -10,7 +10,7 @@ type Props = {
 const EditIssueButton: React.FC<Props> = ({ id }) => (
   <Button>
     <Pencil1Icon />
-    <Link href={`/issues/${id}/edit`}>
+    <Link href={`/issues/edit/${id}`}>
       Edit Issue
     </Link>
   </Button>
