@@ -36,7 +36,7 @@ const IssueDetailPage: React.FC<Props> = async ({ params: { id } }) => {
       {session && (
         <Box>
           <Flex direction="column" gap="4">
-            <AssigneeSelect />
+            <AssigneeSelect issue={issue} />
             <EditIssueButton id={issue.id} />
             <RemoveIssueButton id={issue.id} />
           </Flex>
