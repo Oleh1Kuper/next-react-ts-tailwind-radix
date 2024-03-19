@@ -26,9 +26,13 @@ const AssigneeSelect: React.FC<Props> = ({ issue }) => {
 
   const handleAssign = async (id: string | null) => {
     try {
-      await axios.patch(`/api/issues/${issue.id}`, { assignedToUserId: id });
+      await axios
+        .patch(`/api/issues/${issue.id}`, { assignedToUserId: id });
+      toast.success('Changes was saved.', {
+        position: 'top-center',
+      });
     } catch {
-      toast.error('Changes could not be saved', {
+      toast.error('Changes could not be saved.', {
         position: 'top-center',
       });
     }

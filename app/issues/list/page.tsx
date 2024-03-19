@@ -2,13 +2,53 @@ import React from 'react';
 import prisma from '@/prisma/client';
 import { Table } from '@radix-ui/themes';
 import { IssueStatusBadge } from '@/app/components';
+import { Issue, Status } from '@prisma/client';
+import Link from 'next/link';
 import IssueToolBar from './IssueToolBar';
-import Link from '../../components/Link';
 
 export const dynamic = 'force-dynamic';
 
-const IssuesPage = async () => {
-  const issues = await prisma.issue.findMany();
+type Props = {
+  searchParams: { status: Status, sort: keyof Issue, order: string };
+}
+
+const IssuesPage: React.FC<Props> = async ({ searchParams }) => {
+  const columns: {
+    label: string;
+    value: keyof Issue;
+    className?: string;
+  }[] = [
+    { label: 'Issue', value: 'title' },
+    { label: 'Status', value: 'status', className: 'hidden md:table-cell' },
+    { label: 'Created', value: 'createdAt', className: 'hidden md:table-cell' },
+  ];
+  const statuses = Object.values(Status);
+  const statusToFilter = statuses.includes(searchParams.status)
+    ? searchParams.status
+    : undefined;
+  const orderBy = columns
+    .map(({ value }) => value).includes(searchParams.sort)
+    ? { [searchParams.sort]: searchParams.order }
+    : undefined;
+
+  const setSortingOrder = (sortValue: keyof Issue) => {
+    if (searchParams.sort !== sortValue) {
+      return 'asc';
+    }
+
+    if (searchParams.order === 'asc') {
+      return 'desc';
+    }
+
+    return 'asc';
+  };
+
+  const issues = await prisma.issue.findMany({
+    where: {
+      status: statusToFilter,
+    },
+    orderBy,
+  });
 
   return (
     <div>
@@ -17,17 +57,19 @@ const IssuesPage = async () => {
       <Table.Root variant="surface">
         <Table.Header>
           <Table.Row>
-            <Table.ColumnHeaderCell>
-              Issue
-            </Table.ColumnHeaderCell>
-
-            <Table.ColumnHeaderCell className="hidden md:table-cell">
-              Status
-            </Table.ColumnHeaderCell>
-
-            <Table.ColumnHeaderCell className="hidden md:table-cell">
-              Created
-            </Table.ColumnHeaderCell>
+            {columns.map(({ label, value, className }) => (
+              <Table.ColumnHeaderCell
+                key={label}
+                className={className}
+              >
+                <Link href={{
+                  query: { ...searchParams, sort: value, order: setSortingOrder(value) },
+                }}
+                >
+                  {label}
+                </Link>
+              </Table.ColumnHeaderCell>
+            ))}
           </Table.Row>
         </Table.Header>
 
