@@ -36,6 +36,7 @@ const Pagination: React.FC<Props> = ({ pageSize, itemCount, currentPage }) => {
       <Text>
         {`Page ${currentPage} of ${pageCount}`}
       </Text>
+
       <Button
         disabled={currentPage === 1}
         variant="soft"

@@ -1,5 +1,5 @@
 import React from 'react';
-import { IssueStatusBadge } from '@/app/components';
+import { IssueStatusBadge, Link as CustomLink } from '@/app/components';
 import { Table } from '@radix-ui/themes';
 import Link from 'next/link';
 import { Issue, Status } from '@prisma/client';
@@ -69,9 +69,9 @@ const IssueTable: React.FC<Props> = ({ searchParams, issues }) => {
         }) => (
           <Table.Row key={id}>
             <Table.RowHeaderCell>
-              <Link href={`/issues/${id}`}>
+              <CustomLink href={`/issues/${id}`}>
                 {title}
-              </Link>
+              </CustomLink>
               <div className="block md:hidden">
                 <IssueStatusBadge status={status} />
               </div>
