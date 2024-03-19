@@ -72,6 +72,7 @@ const IssueTable: React.FC<Props> = ({ searchParams, issues }) => {
               <CustomLink href={`/issues/${id}`}>
                 {title}
               </CustomLink>
+
               <div className="block md:hidden">
                 <IssueStatusBadge status={status} />
               </div>

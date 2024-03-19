@@ -16,7 +16,10 @@ const LatestIssues = async () => {
 
   return (
     <Card>
-      <Heading mb="4" size="4">Latest issues</Heading>
+      <Heading mb="4" size="4">
+        Latest issues
+      </Heading>
+
       <Table.Root>
         <Table.Body>
           {issues.map(({
@@ -29,8 +32,10 @@ const LatestIssues = async () => {
                     <Link href={`/issues/${id}`}>
                       {title}
                     </Link>
+
                     <IssueStatusBadge status={status} />
                   </Flex>
+
                   {assignedToUser && (
                   <Avatar
                     src={assignedToUser.image!}

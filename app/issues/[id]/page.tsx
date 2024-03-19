@@ -15,7 +15,9 @@ type Props = {
 
 const IssueDetailPage: React.FC<Props> = async ({ params: { id } }) => {
   const session = await getServerSession(authOptions);
-  const issue = await prisma.issue.findUnique({ where: { id: +id } });
+  const issue = await prisma.issue.findUnique({
+    where: { id: +id },
+  });
 
   if (!issue) {
     notFound();
@@ -45,5 +47,16 @@ const IssueDetailPage: React.FC<Props> = async ({ params: { id } }) => {
     </Grid>
   );
 };
+
+export async function generateMetadata({ params }: Props) {
+  const issue = await prisma.issue.findUnique({
+    where: { id: +params.id },
+  });
+
+  return {
+    title: issue?.title,
+    description: `Details of issue ${issue?.id}`,
+  };
+}
 
 export default IssueDetailPage;

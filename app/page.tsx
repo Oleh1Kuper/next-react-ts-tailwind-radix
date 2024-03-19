@@ -1,6 +1,7 @@
 import React from 'react';
 import prisma from '@/prisma/client';
 import { Flex, Grid } from '@radix-ui/themes';
+import { Metadata } from 'next';
 import LatestIssues from './LatestIssues';
 import IssueSummary from './IssueSummary';
 import IssueChart from './IssueChart';
@@ -34,3 +35,8 @@ const Home: React.FC<Props> = async () => {
 };
 
 export default Home;
+
+export const metadata: Metadata = {
+  title: 'Issue Tracker - Dashboard',
+  description: 'View a summary of project issues',
+};

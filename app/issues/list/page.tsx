@@ -1,7 +1,8 @@
+import React from 'react';
 import { Pagination } from '@/app/components';
 import prisma from '@/prisma/client';
 import { Status } from '@prisma/client';
-import React from 'react';
+import { Metadata } from 'next';
 import { Flex } from '@radix-ui/themes';
 import IssueTable, { IssueQuery, columnNames } from './IssueTable';
 import IssueToolBar from './IssueToolBar';
@@ -50,3 +51,8 @@ const IssuesPage: React.FC<Props> = async ({ searchParams }) => {
 };
 
 export default IssuesPage;
+
+export const metadata: Metadata = {
+  title: 'Issue Tracker - Issue list',
+  description: 'View all project issues',
+};

@@ -40,7 +40,7 @@ const IssueStatusFilter = () => {
   return (
     <Select.Root
       onValueChange={onChangeStatus}
-      defaultValue={searchParams.get('status') || ''}
+      defaultValue={searchParams.get('status') || 'ALL'}
     >
       <Select.Trigger placeholder="Filter by status" />
 
