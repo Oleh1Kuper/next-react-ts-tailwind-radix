@@ -6,7 +6,7 @@ type Props = {
 }
 
 const Home: React.FC<Props> = ({ searchParams }) => (
-  <Pagination currentPage={+searchParams.page || 0} itemCount={100} pageSize={10} />
+  <Pagination currentPage={+searchParams || 1} itemCount={100} pageSize={10} />
 );
 
 export default Home;
