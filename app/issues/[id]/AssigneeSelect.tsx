@@ -8,6 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Skeleton } from '@/app/components';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from 'next/navigation';
 
 type Props = {
   issue: Issue;
@@ -21,6 +22,8 @@ const AssigneeSelect: React.FC<Props> = ({ issue }) => {
     staleTime: 60 * 1000,
   });
 
+  const router = useRouter();
+
   if (error) return null;
   if (isLoading) return <Skeleton height="2rem" />;
 
@@ -31,6 +34,7 @@ const AssigneeSelect: React.FC<Props> = ({ issue }) => {
       toast.success('Changes was saved.', {
         position: 'top-center',
       });
+      router.refresh();
     } catch {
       toast.error('Changes could not be saved.', {
         position: 'top-center',
@@ -40,6 +44,7 @@ const AssigneeSelect: React.FC<Props> = ({ issue }) => {
 
   return (
     <>
+      <ToastContainer />
       <Select.Root
         defaultValue={issue.assignedToUserId || ''}
         onValueChange={
@@ -62,7 +67,6 @@ const AssigneeSelect: React.FC<Props> = ({ issue }) => {
           </Select.Group>
         </Select.Content>
       </Select.Root>
-      <ToastContainer />
     </>
   );
 };

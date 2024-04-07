@@ -22,11 +22,11 @@ const IssuesPage: React.FC<Props> = async ({ searchParams }) => {
   const where = { status: statusToFilter };
 
   const orderBy = columnNames.includes(searchParams.sort)
-    ? { [searchParams.sort]: searchParams.order }
+    ? { [searchParams.sort]: searchParams.order || 'asc' }
     : undefined;
 
   const page = +searchParams.page || 1;
-  const pageSize = 10;
+  const pageSize = +searchParams.issuePerPage || 5;
 
   const issues = await prisma.issue.findMany({
     where,

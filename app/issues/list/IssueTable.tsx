@@ -1,6 +1,7 @@
 import React from 'react';
+import { FaCaretUp, FaCaretDown } from 'react-icons/fa6';
 import { IssueStatusBadge, Link as CustomLink } from '@/app/components';
-import { Table } from '@radix-ui/themes';
+import { Box, Table } from '@radix-ui/themes';
 import Link from 'next/link';
 import { Issue, Status } from '@prisma/client';
 
@@ -9,6 +10,7 @@ export type IssueQuery = {
   sort: keyof Issue;
   order: string;
   page: string;
+  issuePerPage: string;
 }
 
 type Props = {
@@ -29,14 +31,32 @@ const columns: {
 const IssueTable: React.FC<Props> = ({ searchParams, issues }) => {
   const setSortingOrder = (sortValue: keyof Issue) => {
     if (searchParams.sort !== sortValue) {
-      return 'asc';
+      return { sort: sortValue, order: undefined };
     }
 
-    if (searchParams.order === 'asc') {
-      return 'desc';
+    if (!searchParams.order) {
+      return { sort: sortValue, order: 'desc' };
     }
 
-    return 'asc';
+    return { sort: sortValue, order: undefined };
+  };
+
+  const displayIcon = (value: string) => {
+    switch (true) {
+      case value === searchParams.sort && !searchParams.order:
+        return <FaCaretUp />;
+
+      case searchParams.sort === value && !!searchParams.order:
+        return <FaCaretDown />;
+
+      default:
+        return (
+          <>
+            <FaCaretUp className="absolute -top-[10px]" />
+            <FaCaretDown className="absolute -top-1" />
+          </>
+        );
+    }
   };
 
   return (
@@ -48,15 +68,19 @@ const IssueTable: React.FC<Props> = ({ searchParams, issues }) => {
               key={label}
               className={className}
             >
-              <Link href={{
-                query: {
-                  ...searchParams,
-                  sort: value,
-                  order: setSortingOrder(value),
-                },
-              }}
+              <Link
+                className="flex items-center gap-2"
+                href={{
+                  query: {
+                    ...searchParams,
+                    ...setSortingOrder(value),
+                  },
+                }}
               >
                 {label}
+                <Box className="relative items-center">
+                  {displayIcon(value)}
+                </Box>
               </Link>
             </Table.ColumnHeaderCell>
           ))}

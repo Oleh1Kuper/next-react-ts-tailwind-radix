@@ -10,7 +10,7 @@ const LoadingIssuePage = () => {
   return (
     <>
       <IssueToolBar />
-      <Table.Root variant="surface">
+      <Table.Root variant="surface" className="mt-3">
         <Table.Header>
           <Table.Row>
             <Table.ColumnHeaderCell>

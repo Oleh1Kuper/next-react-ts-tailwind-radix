@@ -17,6 +17,7 @@ const IssueStatusFilter = () => {
   const searchParams = useSearchParams();
   const sort = searchParams.get('sort');
   const order = searchParams.get('order');
+  const perPage = searchParams.get('issuePerPage');
 
   const onChangeStatus = (status: string) => {
     const params = new URLSearchParams();
@@ -31,6 +32,10 @@ const IssueStatusFilter = () => {
 
     if (order) {
       params.append('order', order!);
+    }
+
+    if (perPage) {
+      params.append('issuePerPage', perPage!);
     }
 
     router.push(`/issues/list?${params.toString()}`);

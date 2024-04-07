@@ -8,6 +8,7 @@ import EditIssueButton from './EditIssueButton';
 import IssueDetails from './IssueDetails';
 import RemoveIssueButton from './RemoveIssueButton';
 import AssigneeSelect from './AssigneeSelect';
+import AssignIssueStatust from './AssignIssueStatust';
 
 type Props = {
   params: { id: string };
@@ -39,6 +40,7 @@ const IssueDetailPage: React.FC<Props> = async ({ params: { id } }) => {
         <Box>
           <Flex direction="column" gap="4">
             <AssigneeSelect issue={issue} />
+            <AssignIssueStatust id={issue.id} />
             <EditIssueButton id={issue.id} />
             <RemoveIssueButton id={issue.id} />
           </Flex>

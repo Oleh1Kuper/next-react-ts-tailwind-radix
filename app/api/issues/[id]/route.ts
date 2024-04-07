@@ -21,6 +21,7 @@ export async function PATCH(request: NextRequest, { params }: Props) {
     title,
     description,
     assignedToUserId,
+    status,
   } = body;
 
   if (assignedToUserId) {
@@ -53,6 +54,7 @@ export async function PATCH(request: NextRequest, { params }: Props) {
       title,
       description,
       assignedToUserId,
+      status: status || (assignedToUserId ? 'IN_PROGRESS' : 'CLOSED'),
     },
   });
 
