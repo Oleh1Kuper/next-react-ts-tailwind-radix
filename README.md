@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Next.js React TypeScript RadixUI Tailwind
 
-## Getting Started
 
-First, run the development server:
+## Overview
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+This is a full-stack web application built with Next.js, TypeScript, React, Prisma, Tailwind CSS, and Radix UI. The app allows users to track issues, manage assignments, and view analytics through a dashboard built with Recharts.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Features
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- **User Authentication:** Secure login and registration system using NextAuth with Google.
+- **Issue Management:** View, Create, update, and delete issues.
+- **Assignment:** Assign issues to specific users.
+- **Sorting and Filtering:** Easily sort and filter issues based on various criteria.
+- **Pagination:** Navigate through large sets of issues efficiently.
+- **Dashboard:** Visualize issue data and analytics using Recharts.
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+## Technologies Used
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Frontend:**
+  * Next.js
+  * TypeScript
+  * React
+  * Tanstack
+  * React hook form
+  * React loading skeleton
+  * Recharts
+  * Tailwind CSS
+  * Radix UI
+- **Backend:**
+  * Prisma (ORM)
+- **Authentication:**
+  * NextAuth with Google
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Setup
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Clone this repository to your local machine.
+- In the project folder, rename `.env.example` to `.env`
+- Set all the environment variables
+  * You can find various examples of DATABASE_URL [here](https://www.prisma.io/docs/orm/reference/connection-urls) for `DATABASE_URL=`
+  * `NEXTAUTH_URL=http://localhost:3000`
+  * Run `openssl rand -base64 32` to generate a secret. for `NEXTAUTH_SECRET=`
+  * You need to set up OAuth on Google Cloud Platform to get a Client ID and Secret. for `GOOGLE_CLIENT_ID=` and `GOOGLE_CLIENT_SECRET=`
+- Run `npm install` to install the dependencies
+- Run `npx prisma migrate dev` to generate your database tables.
+- Run `npm run dev` to start the web server.
