@@ -1,5 +1,3 @@
-/* eslint-disable no-unreachable */
-
 'use client';
 
 import React, { useState } from 'react';
@@ -38,7 +36,7 @@ const RemoveIssueButton: React.FC<Props> = ({ id }) => {
     <>
       <AlertDialog.Root>
         <AlertDialog.Trigger>
-          <Button disabled={isDeleting} color="red">
+          <Button disabled={isDeleting} className="bg-red-700">
             {!isDeleting && <MdDelete />}
             Delete issue
             {isDeleting && <Spinner />}
@@ -65,7 +63,7 @@ const RemoveIssueButton: React.FC<Props> = ({ id }) => {
             <AlertDialog.Action>
               <Button
                 variant="solid"
-                color="red"
+                className="bg-red-700"
                 onClick={handleClick}
               >
                 Delete

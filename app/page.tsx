@@ -10,6 +10,8 @@ type Props = {
   searchParams: { page: string };
 }
 
+export const dynamic = 'force-dynamic';
+
 const Home: React.FC<Props> = async () => {
   const open = await prisma.issue.count({ where: { status: 'OPEN' } });
   const closed = await prisma.issue.count({ where: { status: 'CLOSED' } });

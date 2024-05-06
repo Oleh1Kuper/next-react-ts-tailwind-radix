@@ -59,6 +59,10 @@ const IssueTable: React.FC<Props> = ({ searchParams, issues }) => {
     }
   };
 
+  if (!issues.length) {
+    return <p>Create a new issue</p>;
+  }
+
   return (
     <Table.Root variant="surface">
       <Table.Header>
